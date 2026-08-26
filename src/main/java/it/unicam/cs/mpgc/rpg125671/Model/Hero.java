@@ -7,9 +7,9 @@ public abstract class Hero {
     private int maxHp;
     private int currentHp;
 
-    private int maxExp;
+    private int expToNextLevel;
     private int currentExp;
-    private int lvl;
+    private int level;
 
     private int att;
 
@@ -28,12 +28,14 @@ public abstract class Hero {
         this.name = name;
         this.maxHp = maxHp;
         currentHp = maxHp;
-        maxExp = 0;
-        currentExp = 0;
-        lvl = 0;
         this.att = att;
         this.def = def;
         this.speed = speed;
+
+        this.level = 1;
+        this.currentExp = 0;
+        this.expToNextLevel = 100;
+
     }
 
 
@@ -41,26 +43,46 @@ public abstract class Hero {
     public void gainExp(int exp) {
         if (exp <= 0)
             throw new IllegalArgumentException("I punti esperienza non possono essere minori di 1.");
-        currentExp += exp;
-        if (currentExp >= maxExp) {
-            currentExp -= maxExp;
-            lvlUp();
-            maxExp++;
-            attUp();
-            defUp();
-            speedUp();
+        this.currentExp += exp;
+        while (this.currentExp >= this.expToNextLevel) {
+            this.currentExp -= this.expToNextLevel;
+            levelUp();
         }
     }
 
-    public void lvlUp() {
-        lvl++;
+    private void levelUp() {
+        this.level++;
+        this.expToNextLevel = (int) (this.expToNextLevel * 1.5);
+        onLevelUp();
     }
 
-    public abstract void attUp();
-    public abstract void defUp();
-    public abstract void speedUp();
+    /**
+     * Metodo hook chiamato al passaggio di livello da ogni classe concreta (Guerriero, Arciere),
+     * che definirà come scalano le statistiche in base all'eroe scelto.
+     */
+    protected abstract void onLevelUp();
 
+    protected void increaseMaxHp(int amount) {
+        if (amount <= 0) throw new IllegalArgumentException("L'incremento della vita deve essere maggiore di 0.");
+        this.maxHp += amount;
+    }
 
+    protected void increaseAtt(int amount) {
+        if (amount <= 0) throw new IllegalArgumentException("L'incremento dell'attacco deve essere maggiore di 0.");
+        this.att += amount;
+    }
+
+    protected void increaseDef(int amount) {
+        if (amount <= 0) throw new IllegalArgumentException("L'incremento dell'attacco deve essere maggiore di 0.");
+        this.def += amount;
+    }
+
+    protected void increaseSpeed(int amount) {
+        if (amount <= 0) throw new IllegalArgumentException("L'incremento dell'attacco deve essere maggiore di 0.");
+        this.speed += amount;
+    }
+
+    // --- GETTER ---
 
     public String getName() {
         return name;
@@ -74,8 +96,16 @@ public abstract class Hero {
         return currentHp;
     }
 
-    public int getExp() {
+    public int getLevel() {
+        return level;
+    }
+
+    public int getCurrentExp() {
         return currentExp;
+    }
+
+    public int getExpToNextLevel() {
+        return expToNextLevel;
     }
 
     public int getAtt() {
