@@ -1,15 +1,11 @@
-package it.unicam.cs.mpgc.rpg125671.Model;
+package it.unicam.cs.mpgc.rpg125671.model;
 
-public abstract class Hero implements Combatant, Healable {
+public abstract class GameCharacter implements Combatant {
 
     private final String name;
 
     private int maxHp;
     private int currentHp;
-
-    private int expToNextLevel;
-    private int currentExp;
-    private int level;
 
     private int attack;
 
@@ -17,64 +13,37 @@ public abstract class Hero implements Combatant, Healable {
 
     private int speed;
 
-    public Hero(String name, int maxHp, int attack, int defense, int speed) {
+    protected GameCharacter(String name, int maxHp, int attack, int defense, int speed) {
         if (name == null || name.isBlank())
             throw new IllegalArgumentException("Il nome non può essere vuoto.");
         if (maxHp <= 0)
             throw new IllegalArgumentException("I punti vita massimi devono essere maggiori di 0.");
         if (attack <= 0 || defense <= 0 || speed <= 0)
-            throw new IllegalArgumentException("Gli attributi dell'eroe non possono essere negativi.");
+            throw new IllegalArgumentException("Gli attributi non possono essere negativi.");
 
         this.name = name;
         this.maxHp = maxHp;
-        currentHp = maxHp;
+        this.currentHp = maxHp;
         this.attack = attack;
         this.defense = defense;
         this.speed = speed;
-
-        this.level = 1;
-        this.currentExp = 0;
-        this.expToNextLevel = 100;
-
     }
 
+    @Override
     public void takeDamage(int finalDamage) {
         if (finalDamage <= 0)
-            throw new IllegalArgumentException("Il danno non può essere negativo.");
+            throw new IllegalArgumentException("Il danno deve essere maggiore di 0.");
         this.currentHp = Math.max(0, this.currentHp - finalDamage);
     }
 
-    public void heal(int amount) {
-        if (amount <= 0)
-            throw new IllegalArgumentException("La cura deve essere maggiore di 0.");
-        this.currentHp = Math.min(this.maxHp, this.currentHp + amount);
-    }
-
+    @Override
     public boolean isAlive() {
         return this.currentHp > 0;
     }
 
-    public void gainExp(int exp) {
-        if (exp <= 0)
-            throw new IllegalArgumentException("I punti esperienza non possono essere minori di 1.");
-        this.currentExp += exp;
-        while (this.currentExp >= this.expToNextLevel) {
-            this.currentExp -= this.expToNextLevel;
-            levelUp();
-        }
+    protected void restoreHp(int amount) {
+        this.currentHp = Math.min(this.maxHp, this.currentHp + amount);
     }
-
-    private void levelUp() {
-        this.level++;
-        this.expToNextLevel = (int) (this.expToNextLevel * 1.5);
-        onLevelUp();
-    }
-
-    /**
-     * Metodo hook chiamato al passaggio di livello da ogni classe concreta (Guerriero, Arciere),
-     * che definirà come scalano le statistiche in base all'eroe scelto.
-     */
-    protected abstract void onLevelUp();
 
     protected void increaseMaxHp(int amount) {
         if (amount <= 0) throw new IllegalArgumentException("L'incremento della vita deve essere maggiore di 0.");
@@ -98,6 +67,7 @@ public abstract class Hero implements Combatant, Healable {
 
     // --- GETTER ---
 
+    @Override
     public String getName() {
         return name;
     }
@@ -106,32 +76,23 @@ public abstract class Hero implements Combatant, Healable {
         return maxHp;
     }
 
+    @Override
     public int getCurrentHp() {
         return currentHp;
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public int getCurrentExp() {
-        return currentExp;
-    }
-
-    public int getExpToNextLevel() {
-        return expToNextLevel;
-    }
-
+    @Override
     public int getAttack() {
         return attack;
     }
 
+    @Override
     public int getDefense() {
         return defense;
     }
 
+    @Override
     public int getSpeed() {
         return speed;
     }
-
 }

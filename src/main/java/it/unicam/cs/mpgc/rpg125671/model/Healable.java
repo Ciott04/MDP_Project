@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg125671.Model;
+package it.unicam.cs.mpgc.rpg125671.model;
 
 /**
  * Entità che può essere curata.
