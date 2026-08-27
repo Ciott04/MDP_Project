@@ -17,7 +17,7 @@ public class Warrior extends Hero {
     }
 
     @Override
-    public void onLevelUp() {
+    protected void onLevelUp() {
         increaseMaxHp(HP_LEVEL_UP);
         increaseAttack(ATTACK_LEVEL_UP);
         increaseDefense(DEFENSE_LEVEL_UP);
