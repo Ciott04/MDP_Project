@@ -2,12 +2,14 @@ package it.unicam.cs.mpgc.rpg125671.model;
 
 public abstract class Hero extends GameCharacter implements Healable {
 
+    private final Inventory inventory;
     private int expToNextLevel;
     private int currentExp;
     private int level;
 
     protected Hero(String name, int maxHp, int attack, int defense, int speed) {
         super(name, maxHp, attack, defense, speed);
+        this.inventory = new Inventory();
         this.level = 1;
         this.currentExp = 0;
         this.expToNextLevel = 100;
@@ -43,6 +45,8 @@ public abstract class Hero extends GameCharacter implements Healable {
     protected abstract void onLevelUp();
 
     // --- GETTER ---
+
+    public Inventory getInventory() { return  this.inventory; }
 
     public int getLevel() {
         return level;
