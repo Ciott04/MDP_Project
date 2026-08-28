@@ -11,7 +11,5 @@ public class Monster extends GameCharacter {
         this.expReward = expReward;
     }
 
-    public int getExpReward() {
-        return expReward;
-    }
+    public int getExpReward() { return expReward; }
 }
