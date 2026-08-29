@@ -1,4 +1,6 @@
-package it.unicam.cs.mpgc.rpg125671.model;
+package it.unicam.cs.mpgc.rpg125671.engine;
+
+import it.unicam.cs.mpgc.rpg125671.model.*;
 
 public class CombatEngine {
 
@@ -35,7 +37,25 @@ public class CombatEngine {
                 damageToMonster = applyAttack(hero, monster);
             else
                 heroHealed = applyPotion();
+            bossHealed = applyBossHeal();
+            if (monster.isAlive())
+                damageToHero = applyAttack(monster, hero);
         }
+        else {
+            damageToHero = applyAttack(monster, hero);
+            if (hero.isAlive()) {
+                if (heroAction == CombatAction.ATTACK)
+                    damageToMonster = applyAttack(hero, monster);
+                else
+                    heroHealed = applyPotion();
+                bossHealed = applyBossHeal();
+            }
+        }
+
+        if (hero.isAlive() && !monster.isAlive())
+            hero.gainExp(monster.getExpReward());
+
+        return new TurnResult(damageToMonster, damageToHero, heroHealed, bossHealed, getCombatResult());
     }
 
     public int applyAttack(Combatant attacker, Combatant defender) {
@@ -52,6 +72,21 @@ public class CombatEngine {
         Item potion = hero.getInventory().removeItem(potionName);
         potion.use(hero);
         return hero.getCurrentHp() - hpBefore;
+    }
+
+    private int applyBossHeal() {
+        if (monster instanceof Boss boss) {
+            int hpBefore = boss.getCurrentHp();
+            if (boss.tryEmergencyHeal())
+                return boss.getCurrentHp() - hpBefore;
+        }
+        return 0;
+    }
+
+    private CombatResult getCombatResult() {
+        if (!hero.isAlive()) return CombatResult.HERO_LOST;
+        if (!monster.isAlive()) return CombatResult.HERO_WON;
+        return CombatResult.IN_PROGRESS;
     }
 
     public boolean isCombatOver() {

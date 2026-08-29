@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg125671.model;
+package it.unicam.cs.mpgc.rpg125671.engine;
 
 public enum CombatResult {
     IN_PROGRESS,
