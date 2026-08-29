@@ -3,10 +3,10 @@ package it.unicam.cs.mpgc.rpg125671.model;
 public class HealingPotion implements Item {
 
     private static final int HEAL_AMOUNT = 30;
-    private static final String name = "Pozione Curativa";
+    private static final String NAME = "Pozione Curativa";
     @Override
     public String getName() {
-        return name;
+        return NAME;
     }
 
     @Override
