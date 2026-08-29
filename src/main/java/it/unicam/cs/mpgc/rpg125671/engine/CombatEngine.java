@@ -58,13 +58,13 @@ public class CombatEngine {
         return new TurnResult(damageToMonster, damageToHero, heroHealed, bossHealed, getCombatResult());
     }
 
-    public int applyAttack(Combatant attacker, Combatant defender) {
+    private int applyAttack(Combatant attacker, Combatant defender) {
         int damage = Math.max(1, attacker.getAttack() - defender.getDefense());
         defender.takeDamage(damage);
         return damage;
     }
 
-    public int applyPotion() {
+    private int applyPotion() {
         String potionName = "Pozione curativa";
         if (!hero.getInventory().hasItem(potionName))
             throw new IllegalStateException(potionName + " non disponibile nell'inventario.");
