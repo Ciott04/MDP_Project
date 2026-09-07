@@ -16,6 +16,11 @@ public class Archer extends Hero {
         super(name, BASE_HP, BASE_ATTACK, BASE_DEFENSE, BASE_SPEED);
     }
 
+    public Archer(String name, int maxHp, int currentHp, int attack, int defense, int speed,
+                  int level, int currentExp, int expToNextLevel) {
+        super(name, maxHp, currentHp, attack, defense, speed, level, currentExp, expToNextLevel);
+    }
+
     @Override
     protected void onLevelUp() {
         increaseMaxHp(HP_LEVEL_UP);

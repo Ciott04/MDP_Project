@@ -8,10 +8,16 @@ public class GameMap {
     private int currentRoomIndex;
 
     public GameMap(List<Room> rooms) {
+        this(rooms, 0);
+    }
+
+    public GameMap(List<Room> rooms, int currentRoomIndex) {
         if (rooms == null || rooms.isEmpty())
             throw new IllegalArgumentException("La mappa deve contenere almeno una stanza.");
+        if (currentRoomIndex < 0 || currentRoomIndex >= rooms.size())
+            throw new IllegalArgumentException("Indice della stanza corrente non valido.");
         this.rooms = List.copyOf(rooms);
-        this.currentRoomIndex = 0;
+        this.currentRoomIndex = currentRoomIndex;
     }
 
     public boolean hasNextRoom() { return currentRoomIndex < rooms.size() - 1; }

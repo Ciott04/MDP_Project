@@ -15,6 +15,15 @@ public abstract class Hero extends GameCharacter implements Healable {
         this.expToNextLevel = 100;
     }
 
+    protected Hero(String name, int maxHp, int currentHp, int attack, int defense, int speed,
+                   int level, int currentExp, int expToNextLevel) {
+        super(name, maxHp, currentHp, attack, defense, speed);
+        this.inventory = new Inventory();
+        this.level = level;
+        this.currentExp = currentExp;
+        this.expToNextLevel = expToNextLevel;
+    }
+
     @Override
     public void heal(int amount) {
         if (amount <= 0)

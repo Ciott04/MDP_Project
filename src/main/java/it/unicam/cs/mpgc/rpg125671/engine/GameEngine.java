@@ -1,9 +1,11 @@
 package it.unicam.cs.mpgc.rpg125671.engine;
 
-import it.unicam.cs.mpgc.rpg125671.model.GameMap;
-import it.unicam.cs.mpgc.rpg125671.model.Hero;
-import it.unicam.cs.mpgc.rpg125671.model.Room;
-import it.unicam.cs.mpgc.rpg125671.model.RoomType;
+import it.unicam.cs.mpgc.rpg125671.model.*;
+import it.unicam.cs.mpgc.rpg125671.persistence.GameSave;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class GameEngine {
 
@@ -20,6 +22,13 @@ public class GameEngine {
         this.hero = hero;
         this.map = mapGenerator.generate();
         this.state = GameState.EXPLORING;
+        this.currentCombat = null;
+    }
+
+    private GameEngine(Hero hero, GameMap map, GameState state) {
+        this.hero = hero;
+        this.map = map;
+        this.state = state;
         this.currentCombat = null;
     }
 
@@ -83,6 +92,85 @@ public class GameEngine {
             state = GameState.GAME_WON;
         else
             state = GameState.ROOM_COMPLETED;
+    }
+
+    // --- SALVATAGGIO ---
+
+    public GameSave toSave() {
+        if (state == GameState.IN_COMBAT)
+            throw new IllegalStateException("Non puoi salvare durante un combattimento.");
+
+        String heroType = hero instanceof Warrior ? "WARRIOR" : "ARCHER";
+        GameSave.HeroData heroData = new GameSave.HeroData(
+                heroType, hero.getName(), hero.getMaxHp(), hero.getCurrentHp(),
+                hero.getAttack(), hero.getDefense(), hero.getSpeed(),
+                hero.getLevel(), hero.getCurrentExp(), hero.getExpToNextLevel(),
+                hero.getInventory().getSummary()
+        );
+
+        List<GameSave.RoomData> roomDataList = new ArrayList<>();
+        for (Room room : map.getRooms()) {
+            GameSave.MonsterData monsterData = null;
+            if (room.getMonster() != null) {
+                Monster m = room.getMonster();
+                monsterData = new GameSave.MonsterData(
+                        m.getName(), m.getMaxHp(), m.getAttack(), m.getDefense(),
+                        m.getSpeed(), m.getExpReward(), m instanceof Boss
+                );
+            }
+            String rewardName = room.getReward() != null ? room.getReward().getName() : null;
+            roomDataList.add(new GameSave.RoomData(
+                    room.getType().name(), monsterData, rewardName, room.isCompleted()
+            ));
+        }
+
+        GameSave.MapData mapData = new GameSave.MapData(roomDataList, map.getCurrentRoomIndex());
+        return new GameSave(heroData, mapData, state.name());
+    }
+
+    public static GameEngine fromSave(GameSave save) {
+        GameSave.HeroData h = save.hero();
+        Hero hero;
+        if ("WARRIOR".equals(h.type())) {
+            hero = new Warrior(h.name(), h.maxHp(), h.currentHp(), h.attack(), h.defense(),
+                    h.speed(), h.level(), h.currentExp(), h.expToNextLevel());
+        } else {
+            hero = new Archer(h.name(), h.maxHp(), h.currentHp(), h.attack(), h.defense(),
+                    h.speed(), h.level(), h.currentExp(), h.expToNextLevel());
+        }
+
+        for (Map.Entry<String, Integer> entry : h.inventory().entrySet()) {
+            for (int i = 0; i < entry.getValue(); i++) {
+                if ("Pozione curativa".equals(entry.getKey())) {
+                    hero.getInventory().addItem(new HealingPotion());
+                }
+            }
+        }
+
+        List<Room> rooms = new ArrayList<>();
+        for (GameSave.RoomData rd : save.map().rooms()) {
+            RoomType type = RoomType.valueOf(rd.type());
+            Room room = switch (type) {
+                case MONSTER -> {
+                    GameSave.MonsterData md = rd.monster();
+                    yield Room.monster(new Monster(md.name(), md.maxHp(), md.attack(),
+                            md.defense(), md.speed(), md.expReward()));
+                }
+                case BOSS -> {
+                    GameSave.MonsterData md = rd.monster();
+                    yield Room.boss(new Boss(md.name(), md.maxHp(), md.attack(),
+                            md.defense(), md.speed(), md.expReward()));
+                }
+                case TREASURE -> Room.treasure(new HealingPotion());
+                case EMPTY -> Room.empty();
+            };
+            if (rd.completed()) room.complete();
+            rooms.add(room);
+        }
+
+        GameMap map = new GameMap(rooms, save.map().currentRoomIndex());
+        GameState state = GameState.valueOf(save.gameState());
+        return new GameEngine(hero, map, state);
     }
 
     // --- GETTER ---

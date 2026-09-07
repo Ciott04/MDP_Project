@@ -14,16 +14,22 @@ public abstract class GameCharacter implements Combatant {
     private int speed;
 
     protected GameCharacter(String name, int maxHp, int attack, int defense, int speed) {
+        this(name, maxHp, maxHp, attack, defense, speed);
+    }
+
+    protected GameCharacter(String name, int maxHp, int currentHp, int attack, int defense, int speed) {
         if (name == null || name.isBlank())
             throw new IllegalArgumentException("Il nome non può essere vuoto.");
         if (maxHp <= 0)
             throw new IllegalArgumentException("I punti vita massimi devono essere maggiori di 0.");
+        if (currentHp < 0 || currentHp > maxHp)
+            throw new IllegalArgumentException("I punti vita correnti non sono validi.");
         if (attack <= 0 || defense <= 0 || speed <= 0)
             throw new IllegalArgumentException("Gli attributi non possono essere negativi.");
 
         this.name = name;
         this.maxHp = maxHp;
-        this.currentHp = maxHp;
+        this.currentHp = currentHp;
         this.attack = attack;
         this.defense = defense;
         this.speed = speed;
