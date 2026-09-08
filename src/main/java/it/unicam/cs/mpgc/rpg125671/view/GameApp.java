@@ -20,9 +20,10 @@ public class GameApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        this.stage = stage;
+        this.stage = primaryStage;
         stage.setTitle("Dungeon of the Forgotten");
         stage.setScene(new Scene(new MainMenuView(this), WIDTH, HEIGHT));
+        stage.show();
     }
 
     void switchView(Parent view) {
