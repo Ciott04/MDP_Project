@@ -28,4 +28,40 @@ public class Warrior extends Hero {
         increaseDefense(DEFENSE_LEVEL_UP);
         increaseSpeed(SPEED_LEVEL_UP);
     }
+
+    // --- GETTER STATISTICHE BASE ---
+
+    public static int getBaseHp() {
+        return BASE_HP;
+    }
+
+    public static int getBaseAttack() {
+        return BASE_ATTACK;
+    }
+
+    public static int getBaseDefense() {
+        return BASE_DEFENSE;
+    }
+
+    public static int getBaseSpeed() {
+        return BASE_SPEED;
+    }
+
+    // --- GETTER STATISTICHE LEVEL UP ---
+
+    public static int getHpLevelUp() {
+        return HP_LEVEL_UP;
+    }
+
+    public static int getAttackLevelUp() {
+        return ATTACK_LEVEL_UP;
+    }
+
+    public static int getDefenseLevelUp() {
+        return DEFENSE_LEVEL_UP;
+    }
+
+    public static int getSpeedLevelUp() {
+        return SPEED_LEVEL_UP;
+    }
 }
