@@ -59,7 +59,7 @@ public class ProceduralMapGenerator implements MapGenerator {
     private Monster generateMonster(int depth) {
         String name = MONSTER_NAMES[random.nextInt(MONSTER_NAMES.length)];
         int hp = 40 + depth * 10;
-        int attack = 8 + depth * 2;
+        int attack = 8 + depth * 1;
         int defense = 3 + depth;
         int speed = 4 + depth;
         int expReward = 20 + depth * 10;
@@ -68,7 +68,7 @@ public class ProceduralMapGenerator implements MapGenerator {
 
     private Room generateBossRoom() {
         String bossName = BOSS_NAMES[random.nextInt(BOSS_NAMES.length)];
-        Boss boss = new Boss(bossName, 200, 25, 15, 8, 150);
+        Boss boss = new Boss(bossName, 200, 18, 15, 8, 150);
         return Room.boss(boss);
     }
 }

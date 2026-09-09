@@ -55,6 +55,9 @@ public class HeroSelectionView extends VBox {
     private void startGame(GameApp app, Hero hero) {
         hero.getInventory().addItem(new HealingPotion());
         hero.getInventory().addItem(new HealingPotion());
+        hero.getInventory().addItem(new HealingPotion());
+        if (hero instanceof Archer)
+            hero.getInventory().addItem(new HealingPotion());
         app.setGameEngine(new GameEngine(hero, new ProceduralMapGenerator(ROOM_COUNT)));
         app.showExploration();
     }

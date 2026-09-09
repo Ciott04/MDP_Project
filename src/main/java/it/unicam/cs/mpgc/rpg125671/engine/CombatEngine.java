@@ -59,7 +59,7 @@ public class CombatEngine {
     }
 
     private int applyAttack(Combatant attacker, Combatant defender) {
-        int damage = Math.max(1, attacker.getAttack() - defender.getDefense());
+        int damage = Math.max(1, attacker.getAttack() - defender.getDefense() / 2);
         defender.takeDamage(damage);
         return damage;
     }

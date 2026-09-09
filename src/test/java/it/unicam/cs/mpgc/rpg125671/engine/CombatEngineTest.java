@@ -120,9 +120,9 @@ class CombatEngineTest {
         
         TurnResult result = engine.executeTurn(CombatAction.USE_POTION);
         
-        assertEquals(30, result.heroHealed()); // Pozione cura 30
+        assertEquals(50, result.heroHealed()); // Pozione cura 50
         assertEquals(5, result.damageToHero());
-        assertEquals(95, hero.getCurrentHp()); // 70 + 30 - 5 = 95
+        assertEquals(115, hero.getCurrentHp()); // 70 + 50 - 5 = 115
     }
 
     @Test
