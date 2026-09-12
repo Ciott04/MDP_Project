@@ -5,6 +5,7 @@ import it.unicam.cs.mpgc.rpg125671.model.Hero;
 import it.unicam.cs.mpgc.rpg125671.model.Monster;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -91,6 +92,22 @@ public class CombatView extends BorderPane {
 
         combatLog.appendText("\n");
         updateLabels();
+
+        if (result.levelUpInfo() != null) {
+            LevelUpInfo info = result.levelUpInfo();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Livello aumentato!");
+            alert.setHeaderText("⬆ Livello " + info.newLevel() + "!");
+            alert.setContentText(String.format(
+                    "Le tue statistiche sono aumentate:%n" +
+                    "HP Massimi  +%d%n" +
+                    "Attacco     +%d%n" +
+                    "Difesa      +%d%n" +
+                    "Velocità    +%d",
+                    info.hpGain(), info.attackGain(), info.defenseGain(), info.speedGain()
+            ));
+            alert.showAndWait();
+        }
 
         if (result.combatResult() == CombatResult.HERO_WON) {
             combatLog.appendText("Vittoria! Hai sconfitto il nemico.\n");
