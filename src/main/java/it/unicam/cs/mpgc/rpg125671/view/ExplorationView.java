@@ -5,6 +5,7 @@ import it.unicam.cs.mpgc.rpg125671.engine.GameState;
 import it.unicam.cs.mpgc.rpg125671.model.Hero;
 import it.unicam.cs.mpgc.rpg125671.model.Room;
 import it.unicam.cs.mpgc.rpg125671.model.RoomType;
+import it.unicam.cs.mpgc.rpg125671.persistence.SaveManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
