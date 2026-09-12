@@ -9,7 +9,7 @@ javafx {
     modules = listOf("javafx.controls")
 }
 
-group = "org.example"
+group = "it.unicam.cs.mpgc"
 version = "1.0-SNAPSHOT"
 
 repositories {
