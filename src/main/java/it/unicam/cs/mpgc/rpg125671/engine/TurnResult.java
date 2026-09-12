@@ -5,5 +5,6 @@ public record TurnResult(
        int damageToHero,
        int heroHealed,
        int bossHealed,
-       CombatResult combatResult
+       CombatResult combatResult,
+       LevelUpInfo levelUpInfo
 ) {}
