@@ -38,7 +38,7 @@ class CombatEngineTest {
         
         TurnResult result = engine.executeTurn(CombatAction.ATTACK);
         
-        assertEquals(10, result.damageToMonster()); // 15 ATK - 5 DEF
+        assertEquals(13, result.damageToMonster()); // 15 ATK - 5/2=2 DEF = 13
         assertTrue(engine.isHeroFirst());
     }
 
@@ -51,8 +51,8 @@ class CombatEngineTest {
         
         TurnResult result = engine.executeTurn(CombatAction.ATTACK);
         
-        assertEquals(5, result.damageToHero()); // 20 ATK - 15 DEF
-        assertEquals(115, hero.getCurrentHp());
+        assertEquals(13, result.damageToHero()); // 20 ATK - 15/2=7 DEF = 13
+        assertEquals(107, hero.getCurrentHp());
     }
 
     @Test
@@ -121,8 +121,8 @@ class CombatEngineTest {
         TurnResult result = engine.executeTurn(CombatAction.USE_POTION);
         
         assertEquals(50, result.heroHealed()); // Pozione cura 50
-        assertEquals(5, result.damageToHero());
-        assertEquals(115, hero.getCurrentHp()); // 70 + 50 - 5 = 115
+        assertEquals(13, result.damageToHero()); // 20 ATK - 15/2=7 DEF = 13
+        assertEquals(107, hero.getCurrentHp()); // 70 + 50 - 13 = 107
     }
 
     @Test
