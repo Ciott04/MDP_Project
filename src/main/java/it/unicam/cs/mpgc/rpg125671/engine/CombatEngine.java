@@ -52,10 +52,28 @@ public class CombatEngine {
             }
         }
 
-        if (hero.isAlive() && !monster.isAlive())
+        LevelUpInfo levelUpInfo = null;
+        if (hero.isAlive() && !monster.isAlive()) {
+            int levelBefore = hero.getLevel();
+            int hpBefore    = hero.getMaxHp();
+            int atkBefore   = hero.getAttack();
+            int defBefore   = hero.getDefense();
+            int spdBefore   = hero.getSpeed();
+
             hero.gainExp(monster.getExpReward());
 
-        return new TurnResult(damageToMonster, damageToHero, heroHealed, bossHealed, getCombatResult());
+            if (hero.getLevel() > levelBefore) {
+                levelUpInfo = new LevelUpInfo(
+                        hero.getLevel(),
+                        hero.getMaxHp()    - hpBefore,
+                        hero.getAttack()   - atkBefore,
+                        hero.getDefense()  - defBefore,
+                        hero.getSpeed()    - spdBefore
+                );
+            }
+        }
+
+        return new TurnResult(damageToMonster, damageToHero, heroHealed, bossHealed, getCombatResult(), levelUpInfo);
     }
 
     private int applyAttack(Combatant attacker, Combatant defender) {
