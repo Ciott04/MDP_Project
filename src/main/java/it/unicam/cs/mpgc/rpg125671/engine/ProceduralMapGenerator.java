@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Genera una {@link GameMap} proceduralmente.
+ * Le stanze normali (tutte tranne l'ultima) sono assegnate casualmente:
+ * 60% mostro, 25% tesoro, 15% vuota. L'ultima stanza è sempre il boss.
+ * Le statistiche dei mostri scalano con la profondità della stanza.
+ * Supporta un seed opzionale per generazioni riproducibili.
+ */
 public class ProceduralMapGenerator implements MapGenerator {
 
     private static final String[] MONSTER_NAMES = {
@@ -22,13 +29,12 @@ public class ProceduralMapGenerator implements MapGenerator {
     private final int roomCount;
     private final Random random;
 
-    public ProceduralMapGenerator(int roomCount, long seed) {
-        if (roomCount <  2)
-            throw new IllegalArgumentException("La mappa deve avere almeno 2 stanze.");
-        this.roomCount = roomCount;
-        this.random = new Random(seed);
-    }
-
+    /**
+     * Crea un generatore con seed casuale.
+     *
+     * @param roomCount il numero totale di stanze (inclusa quella del boss); minimo 2.
+     * @throws IllegalArgumentException se {@code roomCount} è minore di 2.
+     */
     public ProceduralMapGenerator(int roomCount) {
         if (roomCount <  2)
             throw new IllegalArgumentException("La mappa deve avere almeno 2 stanze.");
@@ -36,6 +42,25 @@ public class ProceduralMapGenerator implements MapGenerator {
         this.random = new Random();
     }
 
+    /**
+     * Crea un generatore con seed fissato per generazioni riproducibili.
+     *
+     * @param roomCount il numero totale di stanze; minimo 2.
+     * @param seed      il seed del generatore casuale.
+     * @throws IllegalArgumentException se {@code roomCount} è minore di 2.
+     */
+    public ProceduralMapGenerator(int roomCount, long seed) {
+        if (roomCount <  2)
+            throw new IllegalArgumentException("La mappa deve avere almeno 2 stanze.");
+        this.roomCount = roomCount;
+        this.random = new Random(seed);
+    }
+
+    /**
+     * Genera la mappa: {@code roomCount - 1} stanze casuali seguite dalla stanza del boss.
+     *
+     * @return la mappa generata pronta per essere esplorata.
+     */
     @Override
     public GameMap generate() {
         List<Room> rooms = new ArrayList<>();

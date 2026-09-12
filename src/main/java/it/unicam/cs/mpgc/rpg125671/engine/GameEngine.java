@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Orchestratore principale del gioco. Gestisce lo stato globale della partita
+ * ({@link GameState}), coordina l'esplorazione della mappa e delega il combattimento
+ * a {@link CombatEngine}. Espone {@link #toSave()} e {@link #fromSave(GameSave)} per
+ * la serializzazione e il ripristino dello stato.
+ */
 public class GameEngine {
 
     private final Hero hero;
@@ -14,6 +20,13 @@ public class GameEngine {
     private GameState state;
     private CombatEngine currentCombat;
 
+    /**
+     * Crea una nuova partita generando la mappa tramite il generatore fornito.
+     *
+     * @param hero         l'eroe scelto dal giocatore; non può essere null.
+     * @param mapGenerator il generatore di mappa da usare; non può essere null.
+     * @throws IllegalArgumentException se uno dei parametri è null.
+     */
     public GameEngine(Hero hero, MapGenerator mapGenerator) {
         if (hero == null)
             throw new IllegalArgumentException("L'eroe non può essere null.");
@@ -32,6 +45,17 @@ public class GameEngine {
         this.currentCombat = null;
     }
 
+    /**
+     * Entra nella stanza corrente e ne risolve il tipo:
+     * <ul>
+     *   <li>MONSTER / BOSS → avvia il combattimento, stato passa a {@code IN_COMBAT}.</li>
+     *   <li>TREASURE → aggiunge la ricompensa all'inventario, stanza completata.</li>
+     *   <li>EMPTY → stanza completata immediatamente.</li>
+     * </ul>
+     *
+     * @return la stanza corrente.
+     * @throws IllegalStateException se lo stato non è {@code EXPLORING} o la stanza è già completata.
+     */
     public Room enterCurrentRoom() {
         if (state != GameState.EXPLORING)
             throw new IllegalStateException("Non puoi entrare in una stanza ora.");
@@ -59,6 +83,15 @@ public class GameEngine {
         return room;
     }
 
+    /**
+     * Esegue un turno di combattimento delegando a {@link CombatEngine#executeTurn}.
+     * Aggiorna lo stato in base al risultato: vittoria → {@code ROOM_COMPLETED} o {@code GAME_WON};
+     * sconfitta → {@code GAME_OVER}.
+     *
+     * @param action l'azione scelta dal giocatore.
+     * @return il risultato del turno.
+     * @throws IllegalStateException se lo stato non è {@code IN_COMBAT}.
+     */
     public TurnResult executeCombatTurn(CombatAction action) {
         if (state != GameState.IN_COMBAT)
             throw new IllegalStateException("Non sei in combattimento.");
@@ -76,6 +109,12 @@ public class GameEngine {
         return result;
     }
 
+    /**
+     * Avanza alla stanza successiva della mappa.
+     *
+     * @return la nuova stanza corrente.
+     * @throws IllegalStateException se lo stato non è {@code ROOM_COMPLETED} o non ci sono altre stanze.
+     */
     public Room advanceToNextRoom() {
         if (state != GameState.ROOM_COMPLETED)
             throw new IllegalStateException("Non puoi avanzare alla prossima stanza ora.");
@@ -96,6 +135,13 @@ public class GameEngine {
 
     // --- SALVATAGGIO ---
 
+    /**
+     * Serializza lo stato corrente in un oggetto {@link GameSave} pronto per la persistenza.
+     * Il salvataggio è permesso solo tra stanze, non durante un combattimento.
+     *
+     * @return lo stato serializzato.
+     * @throws IllegalStateException se lo stato è {@code IN_COMBAT}.
+     */
     public GameSave toSave() {
         if (state == GameState.IN_COMBAT)
             throw new IllegalStateException("Non puoi salvare durante un combattimento.");
@@ -128,6 +174,14 @@ public class GameEngine {
         return new GameSave(heroData, mapData, state.name());
     }
 
+    /**
+     * Factory method: ricostruisce un {@code GameEngine} a partire da un {@link GameSave}.
+     * Ripristina l'eroe con le statistiche salvate, l'inventario, la mappa con lo stato
+     * di completamento di ogni stanza e l'indice della stanza corrente.
+     *
+     * @param save lo stato salvato da ripristinare.
+     * @return un nuovo {@code GameEngine} pronto a riprendere la partita.
+     */
     public static GameEngine fromSave(GameSave save) {
         GameSave.HeroData h = save.hero();
         Hero hero;
