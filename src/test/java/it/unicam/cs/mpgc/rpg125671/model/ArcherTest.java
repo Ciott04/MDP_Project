@@ -12,10 +12,10 @@ class ArcherTest {
     void statisticheInizialiCorrette() {
         Archer a = new Archer("Legolas");
         assertEquals("Legolas", a.getName());
-        assertEquals(90, a.getMaxHp());
-        assertEquals(90, a.getCurrentHp());
-        assertEquals(14, a.getAttack());
-        assertEquals(6, a.getDefense());
+        assertEquals(100, a.getMaxHp());
+        assertEquals(100, a.getCurrentHp());
+        assertEquals(16, a.getAttack());
+        assertEquals(10, a.getDefense());
         assertEquals(12, a.getSpeed());
     }
 
@@ -24,11 +24,11 @@ class ArcherTest {
     void onLevelUpAumentaStatistiche() {
         Archer a = new Archer("Legolas");
         a.gainExp(100);
-        
-        assertEquals(98, a.getMaxHp());
-        assertEquals(90, a.getCurrentHp());
-        assertEquals(17, a.getAttack());
-        assertEquals(7, a.getDefense());
+
+        assertEquals(108, a.getMaxHp());
+        assertEquals(100, a.getCurrentHp());
+        assertEquals(19, a.getAttack());
+        assertEquals(12, a.getDefense());
         assertEquals(16, a.getSpeed());
     }
 }
