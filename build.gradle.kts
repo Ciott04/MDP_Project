@@ -29,5 +29,4 @@ application {
 
 tasks.test {
     useJUnitPlatform()
-    enabled = false
 }
