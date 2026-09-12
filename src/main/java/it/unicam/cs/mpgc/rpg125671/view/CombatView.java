@@ -13,6 +13,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * Schermata di combattimento a turni.
+ * Mostra gli HP di eroe e mostro in alto, un log testuale degli eventi al centro
+ * e i bottoni di azione (attacca, usa pozione) in basso.
+ * Dopo ogni turno aggiorna le label e gestisce le transizioni di stato:
+ * vittoria → mostra bottone per continuare o per la schermata finale;
+ * sconfitta → mostra bottone Game Over.
+ * Se l'eroe sale di livello, mostra un dialogo {@link Alert} con i delta delle statistiche.
+ */
 public class CombatView extends BorderPane {
 
     private final GameApp app;
@@ -69,6 +78,14 @@ public class CombatView extends BorderPane {
         return box;
     }
 
+    /**
+     * Esegue un turno di combattimento con l'azione scelta.
+     * Valida che la pozione sia disponibile prima di chiamare {@link GameEngine#executeCombatTurn}.
+     * Aggiorna il log, le label HP e gestisce le transizioni di fine combattimento.
+     * Se il turno ha prodotto un level-up, mostra un {@link Alert} con i delta delle stat.
+     *
+     * @param action l'azione scelta dal giocatore.
+     */
     private void executeAction(CombatAction action) {
         GameEngine engine = app.getGameEngine();
         Hero hero = engine.getHero();

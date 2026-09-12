@@ -8,6 +8,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Punto di ingresso dell'applicazione JavaFX e router tra le schermate.
+ * Mantiene il riferimento al {@link Stage} principale, al {@link GameEngine} corrente
+ * e al {@link SaveManager}. Ogni schermata (view) riceve un riferimento a questa classe
+ * per poter navigare verso un'altra schermata chiamando i metodi {@code show*()}.
+ */
 public class GameApp extends Application {
 
     private static final int WIDTH = 800;
@@ -26,6 +32,12 @@ public class GameApp extends Application {
         stage.show();
     }
 
+    /**
+     * Sostituisce il contenuto della scena corrente con la view fornita,
+     * evitando di creare una nuova {@link Scene} ad ogni navigazione.
+     *
+     * @param view il nuovo nodo radice da mostrare.
+     */
     void switchView(Parent view) {
         stage.getScene().setRoot(view);
     }

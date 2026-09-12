@@ -15,6 +15,13 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
+/**
+ * Schermata di esplorazione della mappa.
+ * Mostra le statistiche aggiornate dell'eroe in alto, le informazioni sulla stanza corrente
+ * al centro e i bottoni di azione (entra, avanza, salva) in basso.
+ * I bottoni vengono abilitati o disabilitati in base allo {@link GameState} corrente,
+ * per guidare il giocatore senza permettere azioni non valide.
+ */
 public class ExplorationView extends BorderPane {
 
     private final GameApp app;
@@ -76,6 +83,11 @@ public class ExplorationView extends BorderPane {
         return box;
     }
 
+    /**
+     * Aggiorna lo stato visivo della schermata: testo della stanza corrente
+     * e abilitazione dei bottoni in base allo stato del gioco.
+     * Chiamato all'inizializzazione e dopo ogni azione dell'utente.
+     */
     private void update() {
         GameEngine engine = app.getGameEngine();
         GameState state = engine.getState();
@@ -90,6 +102,13 @@ public class ExplorationView extends BorderPane {
         saveBtn.setDisable(state == GameState.IN_COMBAT);
     }
 
+    /**
+     * Gestisce il click su "Entra nella stanza".
+     * Delega a {@link GameEngine#enterCurrentRoom()} e in base al risultato:
+     * naviga alla {@link CombatView} se è un combattimento,
+     * mostra il messaggio di ricompensa se è un tesoro,
+     * oppure naviga alla schermata di vittoria se è stata l'ultima stanza.
+     */
     private void onEnterRoom() {
         GameEngine engine = app.getGameEngine();
         Room room = engine.enterCurrentRoom();
@@ -118,6 +137,11 @@ public class ExplorationView extends BorderPane {
         refreshView();
     }
 
+    /**
+     * Gestisce il salvataggio della partita.
+     * Serializza lo stato tramite {@link GameEngine#toSave()} e lo persiste
+     * con il {@link SaveManager}. Mostra un messaggio di conferma o errore.
+     */
     private void onSave() {
         try {
             app.getSaveManager().save(app.getGameEngine().toSave(), app.getSaveName());
@@ -127,11 +151,19 @@ public class ExplorationView extends BorderPane {
         }
     }
 
+    /**
+     * Ricostruisce il pannello delle statistiche dell'eroe e aggiorna i bottoni.
+     * Chiamato dopo ogni azione che modifica lo stato (avanzamento, completamento stanza).
+     */
     private void refreshView() {
         setTop(buildHeroStats());
         update();
     }
 
+    /**
+     * @param room la stanza da descrivere.
+     * @return una stringa leggibile con tipo e nome del contenuto della stanza.
+     */
     private String describeRoom(Room room) {
         return switch (room.getType()) {
             case MONSTER -> "Stanza Mostro (" + room.getMonster().getName() + ")";
