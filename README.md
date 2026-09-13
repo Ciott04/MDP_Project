@@ -30,7 +30,7 @@ Nello specifico:
 ### Gemini per:
 * **Design creativo**: aiutato nella decisione del tema del gioco, nelle meccaniche base e nella scelta dei nomi.
 
-### Claude per
+### Claude per:
 * **Code review**: analisi del codice scritto per identificare errori, inconsistenze o violazioni dei principi SOLID e clean code (es. visibilità errata dei metodi, naming delle costanti, validazione degli argomenti).
 * **Gestione della persistenza**:  supporto nella scelta e nell'organizzazione del sistema di persistenza.
 * **Supporto al debugging**: individuazione e spiegazione degli errori di compilazione e dei test falliti, con possibili soluzioni.
