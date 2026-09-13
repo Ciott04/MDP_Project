@@ -25,5 +25,16 @@ gradle run
 
 ## Strumenti AI
 
-Work in progress
+Nel progetto l'intelligenza artificiale è stata utilizzata principalmente come supporto creativo nella scelta del tema di gioco e come strumento di supporto allo sviluppo.
+Nello specifico:
+### Gemini per:
+* **Design creativo**: aiutato nella decisione del tema del gioco, nelle meccaniche base e nella scelta dei nomi.
 
+### Claude per
+* **Code review**: analisi del codice scritto per identificare errori, inconsistenze o violazioni dei principi SOLID e clean code (es. visibilità errata dei metodi, naming delle costanti, validazione degli argomenti).
+* **Gestione della persistenza**:  supporto nella scelta e nell'organizzazione del sistema di persistenza.
+* **Supporto al debugging**: individuazione e spiegazione degli errori di compilazione e dei test falliti, con possibili soluzioni.
+* **Bilanciamento di gioco**: consulenza sulle formule di danno e sulle statistiche delle classi per ottenere un'esperienza di gioco equilibrata.
+* **Generazione della documentazione**: supporto nella stesura della Javadoc per le classi e i metodi più significativi del progetto.
+
+Le scelte progettuali, l'implementazione delle classi e la scrittura del codice sono state condotte da me, con l'AI utilizzata come strumento di confronto e revisione, in modo analogo a quanto avviene con un tutor o con la consultazione di documentazione tecnica.
