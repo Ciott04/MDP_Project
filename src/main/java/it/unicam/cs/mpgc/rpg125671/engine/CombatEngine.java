@@ -119,7 +119,7 @@ public class CombatEngine {
     }
 
     private int applyBossHeal() {
-        if (monster instanceof Boss boss) {
+        if (monster instanceof Boss boss && boss.isAlive()) {
             int hpBefore = boss.getCurrentHp();
             if (boss.tryEmergencyHeal())
                 return boss.getCurrentHp() - hpBefore;

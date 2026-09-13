@@ -154,14 +154,30 @@ class CombatEngineTest {
     }
 
     @Test
+    @DisplayName("Il boss ucciso in un colpo solo non si cura e il combattimento termina")
+    void testBossUccisoInUnColpoNonSiCura() {
+        Hero hero = new Warrior("Eroe"); // ATK=15, SPD=5
+        // Boss con HP bassi, difesa bassa — eroe attacca prima (SPD 5 > 1)
+        Boss boss = new Boss("Boss Debole", 10, 5, 2, 1, 100);
+        CombatEngine engine = new CombatEngine(hero, boss);
+
+        TurnResult result = engine.executeTurn(CombatAction.ATTACK);
+
+        // Il boss è morto: non deve essersi curato
+        assertEquals(0, result.bossHealed());
+        assertFalse(boss.isAlive());
+        assertEquals(CombatResult.HERO_WON, result.combatResult());
+    }
+
+    @Test
     @DisplayName("executeTurn dopo la fine del combattimento lancia eccezione")
     void testExecuteTurnDopoFineCombattimentoLanciaEccezione() {
         Hero hero = new Warrior("Eroe");
         Monster monster = new Monster("Mostro", 1, 10, 5, 1, 20);
         CombatEngine engine = new CombatEngine(hero, monster);
-        
+
         engine.executeTurn(CombatAction.ATTACK); // Uccide il mostro
-        
+
         assertThrows(IllegalArgumentException.class, () -> engine.executeTurn(CombatAction.ATTACK));
     }
 }
