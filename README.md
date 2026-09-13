@@ -1,8 +1,8 @@
-# Dungeon of the Forgotten
+# 📌 Dungeon of the Forgotten
 Dungeon of the Forgotten è un dungeon crawler a turni in stile roguelike sviluppato in Java con interfaccia grafica JavaFX.
 Il giocatore sceglie il proprio eroe tra due classi: *Guerriero* o *Arciere* e lo guida attraverso una serie di stanze generate proceduralmente, combattendo mostri, raccogliendo risorse e puntando a sconfiggere il boss finale per completare il dungeon.
 
-## Come eseguire il progetto
+## 🚀 Come eseguire il progetto
 ### Prerequisiti
 - Java 25 (LTS)
 - Gradle
@@ -15,15 +15,15 @@ cd MDP_Project
 ```
 ### Build del progetto
 ```bash
-gradle build
+./gradlew build
 ```
 
 ### Esecuzione
 ```bash
-gradle run
+./gradlew run
 ```
 
-## Strumenti AI
+## 🤖 Strumenti AI
 
 Nel progetto l'intelligenza artificiale è stata utilizzata principalmente come supporto creativo nella scelta del tema di gioco e come strumento di supporto allo sviluppo.
 Nello specifico:
