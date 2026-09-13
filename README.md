@@ -36,5 +36,6 @@ Nello specifico:
 * **Supporto al debugging**: individuazione e spiegazione degli errori di compilazione e dei test falliti, con possibili soluzioni.
 * **Bilanciamento di gioco**: consulenza sulle formule di danno e sulle statistiche delle classi per ottenere un'esperienza di gioco equilibrata.
 * **Generazione della documentazione**: supporto nella stesura della Javadoc per le classi e i metodi più significativi del progetto.
+* **Generazione di test in JUnit**: generazione di 46 test in JUnit 5 per verificare la corretta funzionalità dei layer *model* e *engine*.
 
 Le scelte progettuali, l'implementazione delle classi e la scrittura del codice sono state condotte da me, con l'AI utilizzata come strumento di confronto e revisione, in modo analogo a quanto avviene con un tutor o con la consultazione di documentazione tecnica.
